@@ -37,13 +37,10 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentManagmentController {
 
-    private static final Logger logger = LoggerFactory.getLogger(StudentManagmentController.class);
-
     @Autowired
     private StudentDao dao;
 
-    @Autowired
-    private RestTemplate restTemplate;
+
 
     @GetMapping({"", "/"})
     public String showStudenttList(Model model) {
@@ -229,7 +226,7 @@ public class StudentManagmentController {
     }
 
     @PostMapping("/edit")
-    public String updateProduct(
+    public String updateStudent(
             Model model,
             @RequestParam Long id,
             @Valid @ModelAttribute StudentDto studentDto,
@@ -284,7 +281,7 @@ public class StudentManagmentController {
     }
 
     @GetMapping("/delete")
-    public String deleteProduct(
+    public String deleteStudent(
             @RequestParam Long id
     ){
 

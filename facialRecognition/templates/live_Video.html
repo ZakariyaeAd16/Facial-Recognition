@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "head.html" %}
+</head>
+<body>
+
+{% include "navbar.html" %}
+
+<section class="py-1">
+
+
+    <div class="row mt-5">
+
+        <div class="col-md-7 offset-lg-2">
+            <a href="http://localhost:8080/" type="button" class="btn btn-success btn-lg mx-auto d-block text-center" style="width: 200px;"><b>Back Home</b></a>
+
+            <img src="{{ url_for('Face') }}" width="100%" class="img-thumbnail">
+        </div>
+    </div>
+
+
+</section>
+
+</body>
+</html>

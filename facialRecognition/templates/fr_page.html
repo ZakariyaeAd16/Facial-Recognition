@@ -7,7 +7,12 @@
 
 {% include "navbar.html" %}
 
+
+
 <div class="container-fluid">
+    <p class="note" style="text-align: center; font-size: 1.2rem; margin-top: 20px; color: #6c757d;">
+        Note: Please ensure you are well positioned in front of the camera to take photos.
+    </p>
     <div class="row mt-5 mb-5">
         <div class="col-md-8">
             <img src="{{ url_for('video_feed') }}" width="100%" class="img-thumbnail">
@@ -17,9 +22,9 @@
             <table class="table" >
                 <thead>
                     <tr>
-                        <th>Person #</th>
+                        <th>Person </th>
                         <th>Name</th>
-                        <th>Skill</th>
+                        <th>Type</th>
                         <th>Added</th>
                     </tr>
                 </thead>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto rounded border p-4 m-4">
+            <h2 class="text-center mb-5">Edit Teacher</h2>
+
+            <form method="post" enctype="multipart/form-data" th:object="${teacherDto}">
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Id</label>
+                    <div class="col-sm-8">
+                        <input readonly class="form-control-plaintext" th:value="${teacher.id}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input class="form-control" th:field="*{firstName}">
+                    <p th:if="${#fields.hasErrors('firstName')}" th:classappend="text-danger" th:errors="*{firstName}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-control" th:field="*{lastName}">
+                    <p th:if="${#fields.hasErrors('lastName')}" th:classappend="text-danger" th:errors="*{lastName}"></p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone</label>
+                    <input class="form-control" th:field="*{phone}">
+                    <p th:if="${#fields.hasErrors('phone')}" th:classappend="text-danger" th:errors="*{phone}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Departement</label>
+                    <select class="form-select" th:field="${teacherDto.departement}">
+                        <option value="">Select The Departement</option>
+                        <option value="Informatique">Informatique</option>
+                        <option value="Langue">Langue</option>
+                        <option value="Economie">Economie</option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('departement')}" th:classappend="text-danger" th:errors="${teacherDto.departement}"></p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Matriculate</label>
+                    <input class="form-control" th:field="*{matriculate}">
+                    <p th:if="${#fields.hasErrors('matriculate')}" th:classappend="text-danger" th:errors="*{matriculate}"></p>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="offset-sm-4 col-sm-8">
+                        <img th:src="@{'/image/' + ${teacher.imageFileName}}" alt="Teacher Image" width="150">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Image</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="file" th:field="*{imageFile}">
+                        <p th:if="${#fields.hasErrors('imageFile')}" th:classappend="text-danger" th:errors="*{imageFile}"></p>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="d-grid mt-3">
+                    <a class="btn btn-outline-primary" th:href="@{/teacher}" role="button">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

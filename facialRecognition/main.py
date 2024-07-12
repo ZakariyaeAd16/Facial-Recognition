@@ -197,6 +197,54 @@ def face_recognition():  # generate frame by frame from camera
             break
 
 
+
+###############################################     Live Video      ###############################
+
+
+
+
+def LiveVideoFace():
+    def draw_boundary(img, classifier, scaleFactor, minNeighbors, color, clf):
+        gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        features = classifier.detectMultiScale(gray_image, scaleFactor, minNeighbors)
+
+        for (x, y, w, h) in features:
+            cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+            id, pred = clf.predict(gray_image[y:y + h, x:x + w])
+            confidence = int(100 * (1 - pred / 300))
+
+            mycursor.execute("SELECT b.prs_name FROM img_dataset a LEFT JOIN prs_mstr b ON a.img_person = b.prs_nbr WHERE img_id = " + str(id))
+            s = mycursor.fetchone()
+            s = '' + ''.join(s) if s else ''
+
+            if confidence > 70:
+                cv2.putText(img, s, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1, cv2.LINE_AA)
+            else:
+                cv2.putText(img, "UNKNOWN", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
+
+        return img
+
+    faceCascade = cv2.CascadeClassifier("resources/haarcascade_frontalface_default.xml")
+    clf = cv2.face.LBPHFaceRecognizer_create()
+    clf.read("classifier.xml")
+
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 500)
+    cap.set(4, 400)
+
+    while True:
+        ret, img = cap.read()
+        img = draw_boundary(img, faceCascade, 1.1, 10, (255, 255, 0), clf)
+
+        frame = cv2.imencode('.jpg', img)[1].tobytes()
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        if cv2.waitKey(1) == 27:
+            break
+
+    cap.release()
+
+
 @app.route('/')
 def home():
     mycursor.execute("select prs_nbr, prs_name, prs_skill, prs_active, prs_added from prs_mstr")
@@ -225,7 +273,7 @@ def addprsn():
 def addprsn_submit():
     prsnbr = request.form.get('txtnbr')
     prsname = request.form.get('txtname')
-    prsskill = request.form.get('student')
+    prsskill = request.form.get('type')
 
     mycursor.execute("""INSERT INTO `prs_mstr` (`prs_nbr`, `prs_name`, `prs_skill`) VALUES
                     ('{}', '{}', '{}')""".format(prsnbr, prsname, prsskill))
@@ -302,6 +350,14 @@ def loadData():
     data = mycursor.fetchall()
 
     return jsonify(response=data)
+
+@app.route('/Face')
+def Face():
+    return Response(LiveVideoFace(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/LiveVideo')
+def LiveVideo():
+    return render_template('live_Video.html')
 
 
 if __name__ == "__main__":

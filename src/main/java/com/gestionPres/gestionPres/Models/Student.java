@@ -15,6 +15,7 @@ public class Student {
     private String email;
     private String phone;
     private String filiere;
+    @Column(unique = true)
     private String matriculate;
     @Column(columnDefinition = "DATE")
     private Date birthday;
